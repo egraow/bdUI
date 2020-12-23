@@ -1,4 +1,4 @@
-# bdUI
+# bdUI -- Pastures Edition
 An all-in-one UI with a focus on high end raiding and performance. bdUI is fully modular, meaning you can freely disable any aspect of it and only use what you want. Its high performance, unobtrusive, and progression raiding-oriented. Its less feature-rich (by design) than other full suites, and aims to be streamlined and extentable in the features it does offer.
 
 Bug reports and discussion on [our discord server](https://discord.gg/2SK3bEw).
