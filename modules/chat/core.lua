@@ -51,7 +51,7 @@ mod.url_patterns = {
 function mod:clean_labels(event, msg)
 -- assert(false, msg)
 	-- Remove player brackets
-	msg = msg:gsub("|Hplayer:([^%|]+)|h%[([^%]]+)%]|h", "|Hplayer:%1|h%2|h")
+	-- msg = msg:gsub("|Hplayer:([^%|]+)|h%[([^%]]+)%]|h", "|Hplayer:%1|h%2|h")
 	
 	-- Abbreviate
 	msg = msg:gsub("<Away>", "<afk>")
@@ -63,8 +63,8 @@ function mod:clean_labels(event, msg)
 
 	-- Whispers are now done with globals
 	msg = msg:gsub("Guild Message of the Day:", "GMotD -")
-	msg = msg:gsub("has come online.", "+")
-	msg = msg:gsub("has gone offline.", "-")
+	-- msg = msg:gsub("has come online.", "+")
+	-- msg = msg:gsub("has gone offline.", "-")
 		
 	--channel replace (Trade and custom)
 	msg = msg:gsub('|h%[(%d+)%. .-%]|h', '|h%1.|h')
@@ -92,18 +92,6 @@ function mod:color_name(event, msg)
 	return msg
 end
 
-function mod:skin_chat_frame_bg(frame)
-	if (not frame) then return end
-	if (not frame.bd_backdrop) then
-		bdUI:set_backdrop(frame)
-	end
-
-	frame._background:SetAlpha(config.bgalpha)
-	frame._background:SetPoint("TOPLEFT", ChatFrame1, "TOPLEFT", -10, 10)
-	frame._background:SetPoint("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", 10, -10)
-	frame._border:SetAlpha(config.bgalpha)
-end
-
 --=============================================
 -- DEFAULTS
 --=============================================
@@ -123,6 +111,8 @@ function mod:set_defaults()
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", mod.message_filter)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", mod.message_filter)
 
+	
+
 	-- currency coloring
 	COPPER_AMOUNT = "%d|cFF954F28"..COPPER_AMOUNT_SYMBOL.."|r";
 	SILVER_AMOUNT = "%d|cFFC0C0C0"..SILVER_AMOUNT_SYMBOL.."|r";
@@ -139,28 +129,32 @@ function mod:set_defaults()
 	CHAT_TAB_HIDE_DELAY = 0
 	CHAT_FRAME_FADE_OUT_TIME = 0
 	CHAT_FRAME_TAB_NORMAL_MOUSEOVER_ALPHA = 1
-	CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = 0
+	CHAT_FRAME_TAB_NORMAL_NOMOUSE_ALPHA = 1
 	CHAT_FRAME_TAB_SELECTED_MOUSEOVER_ALPHA = 1
-	CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA = 0
+	CHAT_FRAME_TAB_SELECTED_NOMOUSE_ALPHA = 1
 	CHAT_FRAME_TAB_ALERTING_MOUSEOVER_ALPHA = 1
 	CHAT_FRAME_TAB_ALERTING_NOMOUSE_ALPHA = 1
 
-	CHAT_WHISPER_GET              = "F %s "
-	CHAT_WHISPER_INFORM_GET       = "T %s "
-	CHAT_BN_WHISPER_GET           = "F %s "
-	CHAT_BN_WHISPER_INFORM_GET    = "T %s "
-	CHAT_BATTLEGROUND_GET         = "|Hchannel:Battleground|hBG.|h %s: "
-	CHAT_BATTLEGROUND_LEADER_GET  = "|Hchannel:Battleground|hBGL.|h %s: "
-	CHAT_GUILD_GET                = "|Hchannel:Guild|hG.|h %s: "
-	CHAT_OFFICER_GET              = "|Hchannel:Officer|hO.|h %s: "
-	CHAT_PARTY_GET                = "|Hchannel:Party|hP.|h %s: "
-	CHAT_PARTY_LEADER_GET         = "|Hchannel:Party|hPL.|h %s: "
-	CHAT_PARTY_GUIDE_GET          = "|Hchannel:Party|hPG.|h %s: "
-	CHAT_RAID_GET                 = "|Hchannel:Raid|hR.|h %s: "
-	CHAT_RAID_LEADER_GET          = "|Hchannel:Raid|hRL.|h %s: "
-	CHAT_RAID_WARNING_GET         = "|Hchannel:RaidWarning|hRW.|h %s: "
-	CHAT_INSTANCE_CHAT_GET        = "|Hchannel:Battleground|hI.|h %s: "
-	CHAT_INSTANCE_CHAT_LEADER_GET = "|Hchannel:Battleground|hIL.|h %s: "
+	CHAT_SAY_GET				  = "| %s "
+	CHAT_YELL_GET 				  = "| %s "
+	CHAT_EMOTE_GET 				  = "| %s "
+	CHAT_EMOTE_UNKNOWN 			  = "| %s "
+	CHAT_WHISPER_GET              = "|cffB19CD9| From:|r %s "
+	CHAT_WHISPER_INFORM_GET       = "|cff966FD6| To:|r %s "
+	CHAT_BN_WHISPER_GET           = "|cffB19CD9| From:|r %s "
+	CHAT_BN_WHISPER_INFORM_GET    = "|cff966FD6| To:|r %s "
+	CHAT_BATTLEGROUND_GET         = "|Hchannel:Battleground|h| BG.|h %s: "
+	CHAT_BATTLEGROUND_LEADER_GET  = "|Hchannel:Battleground|h| BGL.|h %s: "
+	CHAT_GUILD_GET                = "|Hchannel:Guild|h| G.|h %s: "
+	CHAT_OFFICER_GET              = "|Hchannel:Officer|h| O.|h %s: "
+	CHAT_PARTY_GET                = "|Hchannel:Party|h| P.|h %s: "
+	CHAT_PARTY_LEADER_GET         = "|Hchannel:Party|h| PL.|h %s: "
+	CHAT_PARTY_GUIDE_GET          = "|Hchannel:Party|h| PG.|h %s: "
+	CHAT_RAID_GET                 = "|Hchannel:Raid|h| R.|h %s: "
+	CHAT_RAID_LEADER_GET          = "|Hchannel:Raid|h| RL.|h %s: "
+	CHAT_RAID_WARNING_GET         = "|Hchannel:RaidWarning|h| RW.|h %s: "
+	CHAT_INSTANCE_CHAT_GET        = "|Hchannel:Battleground|h| I.|h %s: "
+	CHAT_INSTANCE_CHAT_LEADER_GET = "|Hchannel:Battleground|h| IL.|h %s: "
 	YOU_LOOT_MONEY_GUILD = YOU_LOOT_MONEY
 	LOOT_MONEY_SPLIT_GUILD = LOOT_MONEY_SPLIT
 
@@ -173,6 +167,7 @@ function mod:set_defaults()
 	ToggleChatColorNamesByClassGroup(true, "GUILD_ACHIEVEMENT")
 	ToggleChatColorNamesByClassGroup(true, "ACHIEVEMENT")
 	ToggleChatColorNamesByClassGroup(true, "WHISPER")
+	ToggleChatColorNamesByClassGroup(true, "BN_WHISPER")
 	ToggleChatColorNamesByClassGroup(true, "PARTY")
 	ToggleChatColorNamesByClassGroup(true, "PARTY_LEADER")
 	ToggleChatColorNamesByClassGroup(true, "RAID")
@@ -189,6 +184,18 @@ function mod:set_defaults()
 	ToggleChatColorNamesByClassGroup(true, "INSTANCE_CHAT_LEADER")
 end
 
+-- Helper function for adding chat backdrops
+function SkinChatFrameBackdrop(frame)
+	if (not frame.bd_backdrop) then
+		bdUI:set_backdrop(frame)
+	end
+
+	frame._background:SetAlpha(config.bgalpha)
+	frame._background:SetPoint("TOPLEFT", ChatFrame1, "TOPLEFT", -10, 10)
+	frame._background:SetPoint("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", 10, -10)
+	frame._border:SetAlpha(config.bgalpha)
+end
+
 --=========================================================
 -- CONFIG CALLBACK
 --=========================================================
@@ -200,7 +207,7 @@ function mod:config_callback()
 	
 	if (not config.enabled) then return end
 	
-	mod:skin_chat_frame_bg(ChatFrame1)
+	SkinChatFrameBackdrop(ChatFrame1)
 end
 
 --=========================================================
@@ -237,8 +244,8 @@ function mod:skin_chats()
 			chatframe.DefaultAddMessage = chatframe.AddMessage
 			chatframe.AddMessage = mod.full_filter
 		end
-		
-		mod:skin_chat_frame_bg(chatframe)
+
+		SkinChatFrameBackdrop(chatframe)
 	end
 
 	-- skin pop up chats
@@ -247,8 +254,8 @@ function mod:skin_chats()
 			local frame = _G[name]
 			if (frame.isTemporary) then
 				mod:skin_single_chat(frame)
-					
-				mod:skin_chat_frame_bg(chatframe)
+
+				SkinChatFrameBackdrop(frame)
 			end
 		end
 	end)
@@ -281,7 +288,7 @@ function mod:skin_chats()
 	function SetItemRef(link, ...)
 		local type, value = link:match("(%a+):(.+)")
 		if IsAltKeyDown() and type == "player" then
-			C_PartyInfo.InviteUnit(value:match("([^:]+)"))
+			InviteUnit(value:match("([^:]+)"))
 		elseif (type == "url") then
 			local eb = LAST_ACTIVE_CHAT_EDIT_BOX or ChatFrame1EditBox
 			if not eb then return end
