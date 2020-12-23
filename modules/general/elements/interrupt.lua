@@ -11,10 +11,12 @@ function mod:create_interrupt()
 
 		if (subevent ~= 'SPELL_INTERRUPT') then return end
 
-		local inInstance, instanceType = IsInInstance()
+		-- local inInstance, instanceType = IsInInstance()
 
 		if (UnitExists(sourceName) and UnitIsUnit(sourceName, 'player') and inInstance and (instanceType == "party" or instanceType == "raid")) then
-			SendChatMessage(UnitName("player")..' interrupted ' .. GetSpellLink(extraSpellID), channel)
+		-- if (UnitExists(sourceName) and UnitIsUnit(sourceName, 'player')) then
+			local str = UnitName("player")..' interrupted ' .. (GetSpellLink(extraSpellID) or spellName)
+			SendChatMessage(str, "SAY")
 		end
 	end
 

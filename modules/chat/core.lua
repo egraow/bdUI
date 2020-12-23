@@ -92,6 +92,18 @@ function mod:color_name(event, msg)
 	return msg
 end
 
+function mod:skin_chat_frame_bg(frame)
+	if (not frame) then return end
+	if (not frame.bd_backdrop) then
+		bdUI:set_backdrop(frame)
+	end
+
+	frame._background:SetAlpha(config.bgalpha)
+	frame._background:SetPoint("TOPLEFT", ChatFrame1, "TOPLEFT", -10, 10)
+	frame._background:SetPoint("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", 10, -10)
+	frame._border:SetAlpha(config.bgalpha)
+end
+
 --=============================================
 -- DEFAULTS
 --=============================================
@@ -188,13 +200,7 @@ function mod:config_callback()
 	
 	if (not config.enabled) then return end
 	
-	if (not ChatFrame1.bd_backdrop) then
-		bdUI:set_backdrop(ChatFrame1)
-	end
-	ChatFrame1._background:SetAlpha(config.bgalpha)
-	ChatFrame1._background:SetPoint("TOPLEFT", ChatFrame1, "TOPLEFT", -10, 10)
-	ChatFrame1._background:SetPoint("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", 10, -10)
-	ChatFrame1._border:SetAlpha(config.bgalpha)
+	mod:skin_chat_frame_bg(ChatFrame1)
 end
 
 --=========================================================
@@ -231,6 +237,8 @@ function mod:skin_chats()
 			chatframe.DefaultAddMessage = chatframe.AddMessage
 			chatframe.AddMessage = mod.full_filter
 		end
+		
+		mod:skin_chat_frame_bg(chatframe)
 	end
 
 	-- skin pop up chats
@@ -239,6 +247,8 @@ function mod:skin_chats()
 			local frame = _G[name]
 			if (frame.isTemporary) then
 				mod:skin_single_chat(frame)
+					
+				mod:skin_chat_frame_bg(chatframe)
 			end
 		end
 	end)
@@ -271,7 +281,7 @@ function mod:skin_chats()
 	function SetItemRef(link, ...)
 		local type, value = link:match("(%a+):(.+)")
 		if IsAltKeyDown() and type == "player" then
-			InviteUnit(value:match("([^:]+)"))
+			C_PartyInfo.InviteUnit(value:match("([^:]+)"))
 		elseif (type == "url") then
 			local eb = LAST_ACTIVE_CHAT_EDIT_BOX or ChatFrame1EditBox
 			if not eb then return end

@@ -158,7 +158,43 @@ local function layout(self, unit)
 	self.RaidTargetIndicator:SetSize(12, 12)
 	self.RaidTargetIndicator:SetPoint('CENTER', self, 0, 0)
 
+	
+
 	-- Tags
+	oUF.Tags.Events['name'] = 'UNIT_NAME_UPDATE'
+	oUF.Tags.Methods["name"] = function(unit)
+		local c = UnitClassification(u)
+		-- print(c)
+		if(c == 'rare') then
+			c = 'R'
+		elseif(c == 'rareelite') then
+			c = 'R+'
+		elseif(c == 'elite') then
+			c = '+'
+		elseif(c == 'worldboss') then
+			c = 'B'
+		elseif(c == 'minus' or c == 'trivial') then
+			c = '-'
+		else
+			c = ""
+		end
+
+		c = c or ""
+		unit = UnitName(unit) or ""
+		local name = unit.." "..c
+
+		if (IsActiveBattlefieldArena()) then
+			for i = 1, 5 do
+				if UnitIsUnit(unit, "arena"..i) then
+					name = i
+				end
+			end
+		end
+
+		return unit.." "..c
+	end
+
+
 	oUF.Tags.Events['curhp'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 	oUF.Tags.Methods['curhp'] = function(unit)
 		local hp, hpMax = UnitHealth(unit), UnitHealthMax(unit)
@@ -171,6 +207,10 @@ local function layout(self, unit)
 		local r, g, b = bdUI:ColorGradient(hpPercent, 1,0,0, 1,1,0, 1,1,1)
 		local hex = RGBPercToHex(r, g, b)
 		local perc = table.concat({"|cFF", hex, bdUI:round(hpPercent * 100, 1), "|r"}, "")
+
+		if (perc == 0 or perc == "0") then
+			return "0 / "..numberize(UnitHealthMax(unit))
+		end
 
 		return table.concat({bdUI:numberize(hp), "-", perc}, " ")
 	end
@@ -263,6 +303,7 @@ function mod:create_unitframes()
 				arena:SetPoint("TOP", lastarena, "BOTTOM", -2, -30)
 			end
 			arena:SetSize(config.bosswidth, config.bossheight)
+			arena:SetAttribute('oUF-enableArenaPrep', 1)
 			lastarena = arena
 		end
 	end

@@ -153,6 +153,7 @@ function lib:set_moveable(frame, rename, left, top, right, bottom)
 	local height = frame:GetHeight()
 	local width = frame:GetWidth()
 	local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint()
+	if (not relativeTo) then return end
 	relativeTo = _G[relativeTo] or relativeTo:GetName()
 
 	-- frame:SetBackdrop({bgFile = lib.media.flat, edgeFile = lib.media.flat, edgeSize = lib.pixel})
@@ -297,7 +298,7 @@ local function create_nudge_button(moveX, moveY, callback)
 	moveY = moveY or 0
 
 	local button = CreateFrame("button", nil, controls, BackdropTemplateMixin and "BackdropTemplate")
-	button:SetSize(16, 16)
+	button:SetSize(36, 36)
 	button:SetBackdrop({bgFile = lib.media.flat})
 	button:SetBackdropColor(0,0,0,1)
 	button.controls = controls
@@ -306,7 +307,7 @@ local function create_nudge_button(moveX, moveY, callback)
 	button.tex = button:CreateTexture(nil, "OVERLAY")
 	button.tex:SetTexture(lib.media.arrow)
 	button.tex:SetPoint("CENTER")
-	button.tex:SetSize(8, 8)
+	button.tex:SetSize(15, 15)
 	button.tex:SetDesaturated(1)
 
 
@@ -384,7 +385,7 @@ end)
 
 lib.controls.center_h.tex:SetTexture(lib.media.align)
 lib.controls.center_h.tex:SetRotation(1.5708)
-lib.controls.center_h.tex:SetSize(10, 10)
+lib.controls.center_h.tex:SetSize(18, 18)
 
 -- center vertically
 lib.controls.center_v = create_nudge_button(nil, nil, function(self)
@@ -409,7 +410,7 @@ lib.controls.center_v = create_nudge_button(nil, nil, function(self)
 end)
 
 lib.controls.center_v.tex:SetTexture(lib.media.align)
-lib.controls.center_v.tex:SetSize(10, 10)
+lib.controls.center_v.tex:SetSize(18, 18)
 
 function lib:attach_controls(frame)
 	if (frame.locked) then 

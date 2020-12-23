@@ -120,6 +120,7 @@ local function layout(self, unit)
 	bdUI:set_backdrop(self.Health)
 	function self.Health.PostUpdateColor(s, unit, r, g, b)
 		-- local r, g, b = self.Health:GetStatusBarColor()
+		if (r == nil) then return end
 		local bg = bdUI.media.backdrop
 		
 		if (config.invert) then
@@ -130,7 +131,7 @@ local function layout(self, unit)
 			self.bdHealthPrediction.overAbsorb:SetStatusBarColor(1, 1, 1, .1)
 
 			if (UnitIsDead(unit)) then
-				self.Health._background:SetVertexColor(0.3, 0.3, 0.3, 1)
+				-- self.Health._background:SetVertexColor(0.3, 0.3, 0.3, 1)
 			end
 		else
 			self.Health:SetStatusBarColor(r / 1.5, g / 1.5, b / 1.5)
@@ -140,7 +141,7 @@ local function layout(self, unit)
 			self.bdHealthPrediction.overAbsorb:SetStatusBarColor(0, 0, 0, .4)
 
 			if (UnitIsDead(unit)) then
-				self.Health._background:SetVertexColor(0.3, 0.3, 0.3, 1)
+				-- self.Health._background:SetVertexColor(0.3, 0.3, 0.3, 1)
 			end
 		end
 	end
@@ -666,16 +667,14 @@ function mod:disable_blizzard()
 	addonDisabler:RegisterEvent("PLAYER_REGEN_ENABLED")
 	addonDisabler:SetScript("OnEvent", function(self, event, addon)
 		if (InCombatLockdown()) then return end
+		if (CompactUnitFrameProfiles) then
+			CompactUnitFrameProfiles:UnregisterAllEvents()
+		end
 		if (IsAddOnLoaded("Blizzard_CompactRaidFrames")) then
 			CompactRaidFrameManager:UnregisterAllEvents() 
-			CompactRaidFrameManager:Hide() 
-			CompactRaidFrameManager.Show = noop
 			CompactRaidFrameContainer:UnregisterAllEvents() 
-			CompactRaidFrameContainer:Hide()
-			CompactRaidFrameContainer.Show = noop
 
-			addonDisabler:UnregisterEvent("ADDON_LOADED")
-			addonDisabler:UnregisterEvent("PLAYER_REGEN_ENABLED")
 		end
+		addonDisabler:UnregisterEvent("PLAYER_REGEN_ENABLED")
 	end)
 end

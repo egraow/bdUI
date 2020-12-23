@@ -87,6 +87,15 @@ local function FixCooldownFlash(self)
 	end
 end
 
+local function show_bars()
+	MultiBarBottomLeft:Show()
+	MultiBarBottomRight:Show()
+	MultiBarRight:Show()
+	MultiBarLeft:Show()
+	PetActionBarFrame:Show()
+	StanceBarFrame:Show()
+end
+
 function mod:remove_blizzard()
 	hooksecurefunc(getmetatable(ActionButton1Cooldown).__index, "SetCooldown", FixCooldownFlash)
 
@@ -110,14 +119,15 @@ function mod:remove_blizzard()
 		ZoneAbilityFrame.ignoreFramePositionManager = true
 	end
 	if (ZoneAbilityFrame) then
-		PetBattleFrame.BottomFrame.MicroButtonFrame:SetScript("OnShow", nil)
+		-- hooksecurefunc(PetBattleFrame.BottomFrame.MicroButtonFrame, "Show", function(self) self:Hide() end)
 		-- bdUI:hide_protected(PetBattleFrame.BottomFrame.MicroButtonFrame)
+		PetBattleFrame.BottomFrame.MicroButtonFrame:SetScript("OnShow", nil)
 	end
 	if (OverrideActionBar) then
-		OverrideActionBar:SetScript("OnShow", nil)
+		-- hooksecurefunc(OverrideActionBar, "Show", function(self) self:Hide() end)
 		-- bdUI:hide_protected(OverrideActionBar)
+		-- OverrideActionBar:HookScript("OnShow", function(self) self:Hide(); show_bars() end)
 	end
-	MainMenuBar:SetScript("OnShow", nil)
-
-	-- bdUI:hide_protected(MainMenuBar)
+	
+	-- hooksecurefunc(MainMenuBar, "Show", function(self) self:Hide(); show_bars() end)
 end
