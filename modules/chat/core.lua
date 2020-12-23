@@ -185,7 +185,8 @@ function mod:set_defaults()
 end
 
 -- Helper function for adding chat backdrops
-function SkinChatFrameBackdrop(frame)
+function mod:skin_chat_frame_bg(frame)
+	if (not frame) then return end
 	if (not frame.bd_backdrop) then
 		bdUI:set_backdrop(frame)
 	end
@@ -207,7 +208,7 @@ function mod:config_callback()
 	
 	if (not config.enabled) then return end
 	
-	SkinChatFrameBackdrop(ChatFrame1)
+	mod:skin_chat_frame_bg(ChatFrame1)
 end
 
 --=========================================================
@@ -245,7 +246,7 @@ function mod:skin_chats()
 			chatframe.AddMessage = mod.full_filter
 		end
 
-		SkinChatFrameBackdrop(chatframe)
+		mod:skin_chat_frame_bg(chatframe)
 	end
 
 	-- skin pop up chats
@@ -255,7 +256,7 @@ function mod:skin_chats()
 			if (frame.isTemporary) then
 				mod:skin_single_chat(frame)
 
-				SkinChatFrameBackdrop(frame)
+				mod:skin_chat_frame_bg(frame)
 			end
 		end
 	end)
